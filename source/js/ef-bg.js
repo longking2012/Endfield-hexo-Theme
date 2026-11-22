@@ -1,4 +1,4 @@
-/* 终末地地形背景: <img> + object-fit:cover 强制铺满 + 地名卡跳 Bing */
+/* 终末地地形背景: <img> + object-fit 铺满 + 多设备缩放(2K/4K/手机) + AREA 标记 + 地名卡 */
 (function(){
   var MAN = window.__EF_MANIFEST;
   if(!MAN) return;
@@ -12,7 +12,49 @@
   var body = document.body;
   body.classList.add("ef-theme");
 
-  // <img> 背景层: object-fit:cover 保证铺满整个视口, 绝无黑边
+  /* ===== 多设备缩放配置(全图统一, 来自助手调参模板) =====
+     按访客屏幕宽度自动选档, 应用对应 scale/位移, 并叠加 AREA 标记 */
+  var DEV_CFG = {
+    "4k":   {scale:2.8531, tx:704.35, ty:379.13, areas:[{x:64.923,y:26.246,text:"AREA"}]},
+    "2k":   {scale:2.8531, tx:766.70, ty:405.20, areas:[{x:52.155,y:49.960,text:"AREA"}]},
+    "phone":{scale:6.1159, tx:240.04, ty:242.43, areas:[{x:40.219,y:49.444,text:"AREA"}]}
+  };
+  function pickDev(){
+    var w = window.innerWidth;
+    if(w >= 3000) return "4k";
+    if(w >= 1600) return "2k";
+    return "phone";
+  }
+  var curDev = pickDev();
+
+  // 注入 AREA 标记样式(十字 + 文字)
+  var st = document.createElement("style");
+  st.textContent =
+    ".ef-area{position:fixed;transform:translate(-50%,-50%);z-index:0;pointer-events:none}"
+    + ".ef-area .cross{position:relative;width:26px;height:26px;display:block;margin:0 auto}"
+    + ".ef-area .cross::before,.ef-area .cross::after{content:'';position:absolute;background:#fffa00;opacity:.85}"
+    + ".ef-area .cross::before{left:12px;top:0;width:2px;height:26px}"
+    + ".ef-area .cross::after{top:12px;left:0;height:2px;width:26px}"
+    + ".ef-area .txt{display:block;color:#fffa00;font:600 17px/1 Arial,sans-serif;white-space:nowrap;margin-top:6px;text-shadow:0 0 4px #000;text-align:center}";
+  document.head.appendChild(st);
+
+  function applyDevice(){
+    var cfg = DEV_CFG[curDev] || DEV_CFG["2k"];
+    if(img) img.style.transform = "translate(" + cfg.tx + "px," + cfg.ty + "px) scale(" + cfg.scale + ")";
+    // 叠加 AREA 标记
+    Array.prototype.forEach.call(document.querySelectorAll(".ef-area"), function(e){ e.remove(); });
+    (cfg.areas || []).forEach(function(a){
+      if(a.visible === false) return;
+      var d = document.createElement("div");
+      d.className = "ef-area";
+      d.style.left = a.x + "%";
+      d.style.top = a.y + "%";
+      d.innerHTML = '<span class="cross"></span><span class="txt">' + (a.text || "AREA") + "</span>";
+      document.body.appendChild(d);
+    });
+  }
+
+  // <img> 背景层
   var img = document.createElement("img");
   img.className = "ef-bg";
   img.alt = "";
@@ -23,13 +65,18 @@
     img.src = "/images/contour-" + k + ".svg";
   }
   setBg(pick);
+  applyDevice();
+  window.addEventListener("resize", function(){
+    var nd = pickDev();
+    if(nd !== curDev){ curDev = nd; }
+    applyDevice();
+  });
 
   function bing(lon, lat, lvl){
     return "https://www.bing.com/maps?q=" + lat.toFixed(4) + "," + lon.toFixed(4)
          + "&lvl=" + (lvl || 12);
   }
   function render(){
-    var d = cur.dlon/2, h = cur.dlat/2;
     var c = document.createElement("div");
     c.className = "ef-index";
     c.innerHTML =
@@ -47,6 +94,7 @@
       pick = KEYS[(i+1) % KEYS.length];
       cur = MAN[pick];
       setBg(pick);
+      applyDevice();
       try{ sessionStorage.setItem("__ef_bg", pick); }catch(e){}
       c.outerHTML = "";
       render();
