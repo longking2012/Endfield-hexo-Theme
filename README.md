@@ -1,6 +1,6 @@
-# hexo-theme-endfield
+# Arknights: Endfield Themes
 
-明日方舟「终末地」风格的 Hexo 博客主题。黄黑配色、军事地形图质感、全屏等高线地形背景。
+明日方舟「终末地」(Arknights: Endfield) 风格的 Hexo 博客主题。黄黑配色、军事地形图质感、全屏等高线地形背景。
 
 ## 特性
 
