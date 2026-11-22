@@ -284,6 +284,8 @@ body.ef-theme .nav-avatar{
   width:32px;height:32px;
   border-radius:50%;
   object-fit:fill;
+  transform:scale(1.2);
+  transform-origin:center;
   border:1px solid #3a3c40;
   box-shadow:0 0 10px rgba(255,250,0,.15);
   transition:box-shadow .2s, border-color .2s;
@@ -450,3 +452,55 @@ html{ scrollbar-width:thin; }
 html::-webkit-scrollbar{ width:8px; }
 html::-webkit-scrollbar-track{ background:transparent; }
 html::-webkit-scrollbar-thumb{ background:rgba(255,250,0,.15); border-radius:4px; }
+
+/* ===== 终末地动画: 滚动淡入 + hover 发光 + 背景光晕 ===== */
+.ef-fade{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.ef-fade.visible{opacity:1;transform:none}
+
+.post{transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease}
+.post:hover{transform:translateY(-4px);border-color:rgba(255,250,0,.45);box-shadow:0 0 26px rgba(255,250,0,.12)}
+
+.ef-glow{position:fixed;top:-20%;right:-12%;width:62%;height:140%;z-index:0;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,250,0,.07) 0%,transparent 70%);
+  animation:ef-pulse 9s ease-in-out infinite}
+@keyframes ef-pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+
+/* ===== 左下角音频控制(终末地官网风格) ===== */
+.ef-music{position:fixed;left:22px;bottom:22px;z-index:120;display:none}
+.ef-music.show{display:flex;align-items:center;gap:10px}
+.ef-music button{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.25);
+  background:rgba(10,10,10,.7);color:#eee;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all .3s;padding:0}
+.ef-music button svg{width:20px;height:20px;fill:currentColor}
+.ef-music button:hover{border-color:#fffa00;color:#fffa00}
+.ef-music.playing button{border-color:#fffa00;color:#fffa00}
+.ef-music .ef-wave{display:flex;align-items:flex-end;gap:2px;height:16px}
+.ef-music .ef-wave i{display:block;width:2px;background:#fffa00;animation:ef-wave 0.9s ease-in-out infinite}
+.ef-music .ef-wave i:nth-child(2){animation-delay:.15s}.ef-music .ef-wave i:nth-child(3){animation-delay:.3s}
+.ef-music .ef-wave i:nth-child(4){animation-delay:.45s}
+.ef-music:not(.playing) .ef-wave{display:none}
+@keyframes ef-wave{0%,100%{height:4px}50%{height:16px}}
+
+/* ===== 终末地进站加载界面 ===== */
+.ef-loader{position:fixed;inset:0;z-index:9999;background:#0a0a0f;display:flex;align-items:center;justify-content:center;
+  transition:opacity .8s ease,visibility .8s ease}
+.ef-loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.ef-loader-inner{display:flex;flex-direction:column;align-items:center;gap:16px}
+.ef-loader-avatar{width:128px;height:128px;border-radius:20px;border:2px solid rgba(255,250,0,.45);box-shadow:0 0 30px rgba(255,250,0,.28);animation:ef-logo-in 1.1s ease}
+.ef-loader-title{color:#fff;font:700 25px/1 Arial,sans-serif;letter-spacing:7px}
+.ef-loader-sub{color:#9a9a9a;font:400 13px/1 "Microsoft YaHei",sans-serif;letter-spacing:5px}
+.ef-loader-bar{width:400px;height:3px;background:rgba(255,255,255,.14);overflow:hidden;margin-top:10px}
+.ef-loader-bar i{display:block;height:100%;width:0;background:#fffa00;transition:width .2s linear;box-shadow:0 0 12px #fffa00}
+.ef-loader-foot{width:400px;display:flex;justify-content:space-between;color:#777;font:12px/1 monospace;letter-spacing:3px}
+@keyframes ef-logo-in{from{opacity:0;transform:scale(.88)}to{opacity:1;transform:scale(1)}}
+.ef-loader-status{color:#9a9a9a;text-decoration:none;transition:color .3s}
+.ef-loader-status:hover{color:#fffa00}
+
+/* ===== 相关文章内链 ===== */
+.post-related{margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.post-related-title{font-size:18px;margin-bottom:14px;color:#fffa00}
+.post-related-list{list-style:none;margin:0;padding:0}
+.post-related-list li{margin-bottom:10px;display:flex;flex-direction:column;gap:2px}
+.post-related-list a{color:#ddd;text-decoration:none;border-bottom:1px solid transparent;transition:all .2s}
+.post-related-list a:hover{color:#fffa00;border-bottom-color:#fffa00}
+.post-related-list time{font-size:12px;color:#777;font-family:monospace}

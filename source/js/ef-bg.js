@@ -29,29 +29,12 @@
 
   // 注入 AREA 标记样式(十字 + 文字)
   var st = document.createElement("style");
-  st.textContent =
-    ".ef-area{position:fixed;transform:translate(-50%,-50%);z-index:0;pointer-events:none}"
-    + ".ef-area .cross{position:relative;width:26px;height:26px;display:block;margin:0 auto}"
-    + ".ef-area .cross::before,.ef-area .cross::after{content:'';position:absolute;background:#fffa00;opacity:.85}"
-    + ".ef-area .cross::before{left:12px;top:0;width:2px;height:26px}"
-    + ".ef-area .cross::after{top:12px;left:0;height:2px;width:26px}"
-    + ".ef-area .txt{display:block;color:#fffa00;font:600 17px/1 Arial,sans-serif;white-space:nowrap;margin-top:6px;text-shadow:0 0 4px #000;text-align:center}";
+  st.textContent = "";
   document.head.appendChild(st);
 
   function applyDevice(){
     var cfg = DEV_CFG[curDev] || DEV_CFG["2k"];
     if(img) img.style.transform = "translate(" + cfg.tx + "px," + cfg.ty + "px) scale(" + cfg.scale + ")";
-    // 叠加 AREA 标记
-    Array.prototype.forEach.call(document.querySelectorAll(".ef-area"), function(e){ e.remove(); });
-    (cfg.areas || []).forEach(function(a){
-      if(a.visible === false) return;
-      var d = document.createElement("div");
-      d.className = "ef-area";
-      d.style.left = a.x + "%";
-      d.style.top = a.y + "%";
-      d.innerHTML = '<span class="cross"></span><span class="txt">' + (a.text || "AREA") + "</span>";
-      document.body.appendChild(d);
-    });
   }
 
   // <img> 背景层

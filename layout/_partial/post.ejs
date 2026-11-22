@@ -28,6 +28,20 @@
     <%- page.content %>
   </div>
 
+  <% /* 相关文章: 站内内链, 利于搜索引擎顺链接爬取 */ %>
+  <% var _others = []; site.posts.each(function(p){ if(p.path !== page.path && _others.length < 5) _others.push(p); }); %>
+  <% if (_others.length) { %>
+    <nav class="post-related">
+      <h2 class="post-related-title">相关文章</h2>
+      <ul class="post-related-list">
+        <% _others.forEach(function(p){ %>
+          <li><a href="<%- url_for(p.path) %>"><%= p.title || p.slug %></a>
+            <time><%= date(p.date, 'YYYY-MM-DD') %></time></li>
+        <% }); %>
+      </ul>
+    </nav>
+  <% } %>
+
   <% if (theme.creative_commons && theme.creative_commons.license) { %>
     <div class="post-license">
       本文采用 <a href="https://creativecommons.org/licenses/<%= theme.creative_commons.license %>/deed.zh" target="_blank" rel="noopener"><%= theme.creative_commons.license.toUpperCase() %></a> 许可

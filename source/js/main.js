@@ -63,3 +63,33 @@
     history.replaceState(null, '', '#' + id);
   });
 })();
+
+/* ===== 终末地: 滚动淡入动画 ===== */
+(function(){
+  var els=document.querySelectorAll('.post, .post-page');
+  els.forEach(function(el){el.classList.add('ef-fade')});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+    },{threshold:.08});
+    els.forEach(function(el){ io.observe(el); });
+  }else{ els.forEach(function(el){ el.classList.add('visible'); }); }
+})();
+
+/* ===== 终末地: 右下角音乐播放器 ===== */
+(function(){
+  var m=document.querySelector('.ef-music'); if(!m) return;
+  var btn=m.querySelector('button'), au=m.querySelector('audio');
+  if(!au||!au.getAttribute('src')) return;
+  m.classList.add('show');
+  au.addEventListener('error',function(){ m.classList.remove('show'); });
+  btn.addEventListener('click',function(){
+    if(au.paused){ au.play().catch(function(){ m.classList.remove('show'); }); m.classList.add('playing'); }
+    else{ au.pause(); m.classList.remove('playing'); }
+  });
+})();
+
+/* ===== 终末地: 背景光晕脉冲 ===== */
+(function(){
+  var g=document.createElement('div'); g.className='ef-glow'; document.body.appendChild(g);
+})();
