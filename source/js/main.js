@@ -76,20 +76,80 @@
   }else{ els.forEach(function(el){ el.classList.add('visible'); }); }
 })();
 
-/* ===== 终末地: 右下角音乐播放器 ===== */
+/* ===== 终末地: 右侧边栏音乐播放器 ===== */
 (function(){
-  var m=document.querySelector('.ef-music'); if(!m) return;
-  var btn=m.querySelector('button'), au=m.querySelector('audio');
-  if(!au||!au.getAttribute('src')) return;
-  m.classList.add('show');
-  au.addEventListener('error',function(){ m.classList.remove('show'); });
-  btn.addEventListener('click',function(){
-    if(au.paused){ au.play().catch(function(){ m.classList.remove('show'); }); m.classList.add('playing'); }
-    else{ au.pause(); m.classList.remove('playing'); }
+  var p=document.getElementById('efPlayer'); if(!p) return;
+  var au=document.getElementById('efAudio'); if(!au) return;
+  /* 歌单: 换成你自己的音乐,把 src 改成 /music/xxx.mp3 并把文件放到 source/music/ 即可 */
+  var PLAYLIST=[
+    {title:'My Love (Shorter)',artist:'Raphlesia & BilliumMoto',src:'/music/my-love-shorter.mp3'}
+  ];
+  var idx=0, mode='list'; /* list | one | random */
+  var $=function(id){ return document.getElementById(id); };
+  var playBtn=$('efPlay'), trackEl=$('efTrack'), artistEl=$('efArtist'), curEl=$('efCur'), durEl=$('efDur');
+  var fill=$('efPFill'), buf=$('efPBuf'), bar=$('efPBar'), vol=$('efVol'), pBody=$('efPBody'), toggle=$('efToggle');
+
+  function fmt(s){ if(!isFinite(s)) return '0:00'; s=Math.round(s); var m=Math.floor(s/60), r=s%60; return m+':'+(r<10?'0':'')+r; }
+  function load(i){
+    idx=(i+PLAYLIST.length)%PLAYLIST.length;
+    var t=PLAYLIST[idx];
+    au.src=t.src; trackEl.textContent=t.title; artistEl.textContent=t.artist;
+    fill.style.width='0%'; buf.style.width='0%'; curEl.textContent='0:00'; durEl.textContent='0:00';
+  }
+  function play(){ au.play().then(function(){ p.classList.add('playing'); }).catch(function(){}); }
+  function pause(){ au.pause(); p.classList.remove('playing'); }
+  function next(){
+    if(mode==='one'){ load(idx); play(); return; }
+    if(mode==='random'){ var r; do{ r=Math.floor(Math.random()*PLAYLIST.length); }while(PLAYLIST.length>1 && r===idx); load(r); play(); return; }
+    load(idx+1); play();
+  }
+  function prev(){ if(mode==='random'){ next(); return; } load(idx-1); play(); }
+
+  playBtn.addEventListener('click',function(){ if(au.paused){ if(!au.src) load(0); play(); } else pause(); });
+  $('efNext').addEventListener('click',next);
+  $('efPrev').addEventListener('click',prev);
+  $('efMode').addEventListener('click',function(){
+    mode = mode==='list' ? 'one' : mode==='one' ? 'random' : 'list';
+    this.style.color = mode==='one' ? '#fffa00' : mode==='random' ? '#00ffa2' : '';
+  });
+  $('efMute').addEventListener('click',function(){ au.muted=!au.muted; this.style.color=au.muted?'#fffa00':''; });
+  vol.addEventListener('input',function(){ au.volume=this.value/100; au.muted=false; });
+  au.volume=vol.value/100;
+
+  au.addEventListener('timeupdate',function(){
+    curEl.textContent=fmt(au.currentTime);
+    if(au.duration) fill.style.width=(au.currentTime/au.duration*100)+'%';
+  });
+  au.addEventListener('durationchange',function(){ durEl.textContent=fmt(au.duration); });
+  au.addEventListener('progress',function(){
+    if(au.buffered.length && au.duration) buf.style.width=(au.buffered.end(au.buffered.length-1)/au.duration*100)+'%';
+  });
+  au.addEventListener('ended',function(){ next(); });
+  au.addEventListener('error',function(){ trackEl.textContent='无法加载音频'; artistEl.textContent=''; });
+  bar.addEventListener('click',function(e){
+    var rect=bar.getBoundingClientRect();
+    if(au.duration) au.currentTime=(e.clientX-rect.left)/rect.width*au.duration;
+  });
+  toggle.addEventListener('click',function(){ p.classList.toggle('collapsed'); });
+
+  load(0);
+  p.classList.add('show');
+  /* 手机端: 3秒后收缩成图标吸附边栏(点击展开) */
+  setTimeout(function(){
+    if(window.innerWidth<=768){ p.classList.add('mini'); }
+  },3000);
+  p.addEventListener('click',function(e){
+    if(p.classList.contains('mini')){ p.classList.remove('mini'); e.stopPropagation(); }
   });
 })();
 
-/* ===== 终末地: 背景光晕脉冲 ===== */
-(function(){
-  var g=document.createElement('div'); g.className='ef-glow'; document.body.appendChild(g);
-})();
+/* 手机端: 地名卡 3秒后收缩成图标吸附(点击展开) */
+setTimeout(function(){
+  if(window.innerWidth<=768){
+    var idx=document.querySelector('.ef-index');
+    if(idx){
+      idx.classList.add('mini');
+      idx.addEventListener('click',function(e){ if(idx.classList.contains('mini')){ idx.classList.remove('mini'); e.stopPropagation(); } });
+    }
+  }
+},3000);

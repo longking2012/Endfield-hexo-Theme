@@ -461,25 +461,28 @@ html::-webkit-scrollbar-thumb{ background:rgba(255,250,0,.15); border-radius:4px
 .post:hover{transform:translateY(-4px);border-color:rgba(255,250,0,.45);box-shadow:0 0 26px rgba(255,250,0,.12)}
 
 .ef-glow{position:fixed;top:-20%;right:-12%;width:62%;height:140%;z-index:0;pointer-events:none;
-  background:radial-gradient(circle,rgba(255,250,0,.07) 0%,transparent 70%);
-  animation:ef-pulse 9s ease-in-out infinite}
-@keyframes ef-pulse{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:1;transform:scale(1.08)}}
+  background:radial-gradient(circle,rgba(255,250,0,.07) 0%,transparent 70%)}
 
-/* ===== 左下角音频控制(终末地官网风格) ===== */
-.ef-music{position:fixed;left:22px;bottom:22px;z-index:120;display:none}
-.ef-music.show{display:flex;align-items:center;gap:10px}
-.ef-music button{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.25);
-  background:rgba(10,10,10,.7);color:#eee;cursor:pointer;display:flex;align-items:center;justify-content:center;
+/* ===== 右侧边栏音频小工具(吸附边栏)===== */
+.ef-music{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:120;display:none;
+  flex-direction:column;align-items:center;gap:12px;
+  padding:14px 9px;background:rgba(13,13,13,.82);
+  border:1px solid #35373c;border-right:none;
+  border-radius:8px 0 0 8px;backdrop-filter:blur(10px) saturate(140%);
+  box-shadow:-6px 0 18px rgba(0,0,0,.35)}
+.ef-music.show{display:flex}
+.ef-music button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.04);color:#eee;cursor:pointer;display:flex;align-items:center;justify-content:center;
   transition:all .3s;padding:0}
-.ef-music button svg{width:20px;height:20px;fill:currentColor}
-.ef-music button:hover{border-color:#fffa00;color:#fffa00}
-.ef-music.playing button{border-color:#fffa00;color:#fffa00}
-.ef-music .ef-wave{display:flex;align-items:flex-end;gap:2px;height:16px}
-.ef-music .ef-wave i{display:block;width:2px;background:#fffa00;animation:ef-wave 0.9s ease-in-out infinite}
-.ef-music .ef-wave i:nth-child(2){animation-delay:.15s}.ef-music .ef-wave i:nth-child(3){animation-delay:.3s}
-.ef-music .ef-wave i:nth-child(4){animation-delay:.45s}
-.ef-music:not(.playing) .ef-wave{display:none}
-@keyframes ef-wave{0%,100%{height:4px}50%{height:16px}}
+.ef-music button svg{width:18px;height:18px;fill:currentColor}
+.ef-music button:hover{border-color:#fffa00;color:#fffa00;transform:scale(1.06)}
+.ef-music.playing button{border-color:#fffa00;color:#fffa00;box-shadow:0 0 12px rgba(255,250,0,.3)}
+.ef-music .ef-wave{display:flex;flex-direction:column;align-items:center;gap:3px}
+.ef-music .ef-wave i{display:block;width:14px;height:2px;background:rgba(255,250,0,.5);border-radius:1px}
+.ef-music .ef-wave i:nth-child(2){width:9px}
+.ef-music .ef-wave i:nth-child(3){width:14px}
+.ef-music .ef-wave i:nth-child(4){width:8px}
+.ef-music:not(.playing) .ef-wave{opacity:.35}
 
 /* ===== 终末地进站加载界面 ===== */
 .ef-loader{position:fixed;inset:0;z-index:9999;background:#0a0a0f;display:flex;align-items:center;justify-content:center;
@@ -504,3 +507,275 @@ html::-webkit-scrollbar-thumb{ background:rgba(255,250,0,.15); border-radius:4px
 .post-related-list a{color:#ddd;text-decoration:none;border-bottom:1px solid transparent;transition:all .2s}
 .post-related-list a:hover{color:#fffa00;border-bottom-color:#fffa00}
 .post-related-list time{font-size:12px;color:#777;font-family:monospace}
+
+/* ============================================================
+/* ============================================================
+/* ============================================================
+   LIGHT MODE — 浅色 fakeicp(◐ 按钮切 light 生效)
+   浅底 + 浅面板 + 深字 + 黄 accent,保留斜角/黄顶条几何元素
+   ============================================================ */
+body.ef-theme[data-theme="light"]{
+  background-color:#f0f0ee;
+  --fg:#1a1a1a;
+  --fg-muted:#6b7280;
+  --fg-faint:#9ca3af;
+  --border:#e0e0e0;
+  --hover-bg:#e6e6e2;
+  --bg-panel:#ffffff;
+  --code-bg:#f5f5f7;
+  --code-fg:#c0392b;
+}
+body.ef-theme[data-theme="light"] .ef-bg{
+  filter: invert(1) brightness(.9);
+  mix-blend-mode: multiply;
+  opacity: .5;
+}
+body.ef-theme[data-theme="light"] .ef-index{
+  background:rgba(250,250,248,.95);
+  border-color:#e0e0dc;
+  border-left-color:#d8c800;
+  color:#666;
+}
+body.ef-theme[data-theme="light"] .ef-index-t{ color:#3a3a3a; border-bottom-color:rgba(0,0,0,.12); }
+body.ef-theme[data-theme="light"] .ef-index-t:hover{ color:#111; text-shadow:none; }
+body.ef-theme[data-theme="light"] .ef-index-h{ color:#9a8a00; }
+body.ef-theme[data-theme="light"] .ef-index-c,
+body.ef-theme[data-theme="light"] .ef-index-l{ color:rgba(0,0,0,.42); }
+body.ef-theme[data-theme="light"] .ef-geo{ color:rgba(0,0,0,.42); }
+body.ef-theme[data-theme="light"] .ef-index-r .ef-map,
+body.ef-theme[data-theme="light"] .ef-next{
+  background:#efefec;
+  border-color:#cfcfcb;
+  color:#555;
+}
+body.ef-theme[data-theme="light"] .ef-index-r .ef-map:hover,
+body.ef-theme[data-theme="light"] .ef-next:hover{
+  background:#e2e2de;
+  border-color:#bbb;
+  color:#333;
+}
+body.ef-theme[data-theme="light"] .ef-music{
+  background:rgba(255,255,255,.92);
+  border-color:#ddd;
+  box-shadow:-4px 0 14px rgba(0,0,0,.06);
+}
+body.ef-theme[data-theme="light"]::after{ display:none; }
+body.ef-theme[data-theme="light"] .geo-tag{ color:rgba(0,0,0,.5); }
+body.ef-theme[data-theme="light"] .geo-tag b{ color:rgba(170,150,0,.95); }
+/* header */
+body.ef-theme[data-theme="light"] #header{
+  background:rgba(240,240,238,.94);
+  border-bottom:1px solid #ddd;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+body.ef-theme[data-theme="light"] .site-title.logo{ color:#111; }
+body.ef-theme[data-theme="light"] .nav-link{ color:#333; }
+body.ef-theme[data-theme="light"] .nav-link:hover{ color:#000; }
+/* 面板:浅色 + 保留斜角/黄顶条 */
+body.ef-theme[data-theme="light"] .post,
+body.ef-theme[data-theme="light"] .post-page,
+body.ef-theme[data-theme="light"] .archive-page,
+body.ef-theme[data-theme="light"] .tag-page{
+  background:#fff;
+  border:1px solid #e2e2de;
+  color:#1a1a1a;
+  box-shadow:0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05);
+}
+body.ef-theme[data-theme="light"] .post::before,
+body.ef-theme[data-theme="light"] .post-page::before{ background:#fffa00; }
+body.ef-theme[data-theme="light"] .post:hover{ box-shadow:0 1px 3px rgba(0,0,0,.05),0 12px 32px rgba(0,0,0,.08); }
+/* 文章内容 */
+body.ef-theme[data-theme="light"] .post-title a{ color:#111; }
+body.ef-theme[data-theme="light"] .post-title a:hover{ color:#111; text-shadow:none; border-bottom:2px solid #fffa00; }
+body.ef-theme[data-theme="light"] .post-content{ color:#2a2a2a; }
+body.ef-theme[data-theme="light"] .post-content a{ color:#111; border-bottom:2px solid #fffa00; }
+body.ef-theme[data-theme="light"] .post-content a:hover{ background:#fffa00; }
+body.ef-theme[data-theme="light"] .post-meta,
+body.ef-theme[data-theme="light"] .post-meta a{ color:#888; }
+body.ef-theme[data-theme="light"] .tag{ color:#555; background:#f2f2ef; border-color:#ddd; }
+body.ef-theme[data-theme="light"] .tag:hover{ color:#111; border-color:#111; }
+body.ef-theme[data-theme="light"] .post-content pre{ background:#f5f5f7; border:1px solid #e5e5e0; }
+body.ef-theme[data-theme="light"] .post-content code{ color:#c0392b; }
+body.ef-theme[data-theme="light"] .post-content blockquote{ background:#fafaf7; border-left:3px solid #fffa00; color:#444; }
+body.ef-theme[data-theme="light"] .post-toc{ background:#f7f7f4; }
+body.ef-theme[data-theme="light"] .post-readmore{ color:#111; background:#fffa00; }
+body.ef-theme[data-theme="light"] .post-readmore:hover{ background:#111; color:#fffa00; }
+/* footer / 其它 */
+body.ef-theme[data-theme="light"] #footer{ background:#f0f0ee; color:#888; border-top:1px solid #ddd; }
+body.ef-theme[data-theme="light"] .pagination a,
+body.ef-theme[data-theme="light"] .pagination span{ color:#333; }
+body.ef-theme[data-theme="light"] .archive-year,
+body.ef-theme[data-theme="light"] .tag-name,
+body.ef-theme[data-theme="light"] .category-name{ color:#111; }
+body.ef-theme[data-theme="light"] .post-related-title{ color:#111; border-left:6px solid #fffa00; padding-left:10px; }
+body.ef-theme[data-theme="light"] .post-related-list a{ color:#333; }
+body.ef-theme[data-theme="light"] .ef-music{ color:#555; }
+body.ef-theme[data-theme="light"] .ef-music button{ color:#444; border-color:#ccc; }
+body.ef-theme[data-theme="light"] .ef-music.playing button{ border-color:#111; color:#111; }
+body.ef-theme[data-theme="light"] a{ color:#1a1a1a; }
+
+/* ============================================================
+   FAKEICP 文章标题 — 黄竖条 + // 注释(深浅都生效)
+   ============================================================ */
+body.ef-theme .post-page .post-title{
+  border-left:8px solid #fffa00;
+  padding-left:20px;
+  font-size:34px;
+  font-weight:900;
+  line-height:1.25;
+  position:relative;
+}
+body.ef-theme .post-page .post-title::before{
+  content:"// ARTICLE";
+  display:block;
+  font-family:"JetBrains Mono","Noto Sans Mono",monospace;
+  font-size:12px;
+  letter-spacing:3px;
+  color:var(--fg-muted);
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+body.ef-theme .post-page .post-meta{
+  margin-top:14px;
+  font-family:"JetBrains Mono","Noto Sans Mono",monospace;
+  font-size:13px;
+  letter-spacing:.04em;
+}
+body.ef-theme .post-page .post-toc{
+  border-left:3px solid rgba(255,250,0,.5);
+  padding-left:16px;
+}
+
+/* 加载界面资源显示行 */
+.ef-loader-res{
+  font-family:"JetBrains Mono","Noto Sans Mono",monospace;
+  font-size:11px;
+  letter-spacing:1.5px;
+  color:rgba(255,255,255,.4);
+  text-align:center;
+  margin-top:12px;
+  height:14px;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+}
+
+/* ============================================================
+   动画增强 — 终末地/fakeicp 风格
+   ============================================================ */
+/* 卡片黄色顶条 hover 伸展 */
+body.ef-theme .post::before,
+body.ef-theme .post-page::before{ transition:width .45s cubic-bezier(.4,0,.2,1); }
+body.ef-theme .post:hover::before,
+body.ef-theme .post-page:hover::before{ width:110px; }
+
+/* readmore 按钮 hover 箭头位移 */
+body.ef-theme .post-readmore{ transition:transform .2s ease, background .2s ease, color .2s ease; }
+body.ef-theme .post-readmore:hover{ transform:translateX(4px); }
+
+/* 卡片 hover 扫光(fakeicp 质感) */
+body.ef-theme .post,
+body.ef-theme .post-page{ position:relative; }
+body.ef-theme .post::after{
+  content:""; position:absolute; top:0; left:-80%;
+  width:45%; height:100%;
+  background:linear-gradient(105deg, transparent 35%, rgba(255,250,0,.10) 50%, transparent 65%);
+  transform:skewX(-18deg);
+  transition:left .75s ease;
+  pointer-events:none; z-index:0;
+}
+body.ef-theme .post:hover::after{ left:135%; }
+
+/* 文章标题入场渐显 */
+body.ef-theme .post-page .post-title{ animation:efTitleIn .8s cubic-bezier(.4,0,.2,1) both; }
+@keyframes efTitleIn{ from{ opacity:0; transform:translateX(-16px); } to{ opacity:1; transform:none; } }
+
+/* 标签 hover 弹跳 */
+body.ef-theme .tag{ transition:transform .18s ease, color .2s, border-color .2s, background .2s; }
+body.ef-theme .tag:hover{ transform:translateY(-2px); }
+
+/* 导航链接下划线动画(已有 scaleX,确保平滑) */
+body.ef-theme .nav-link::after{ transition:transform .3s cubic-bezier(.4,0,.2,1); }
+
+/* 尊重减少动画偏好 */
+@media (prefers-reduced-motion:reduce){
+  body.ef-theme .post::after{ display:none; }
+  body.ef-theme .post-page .post-title{ animation:none; }
+  body.ef-theme .post, body.ef-theme .post-readmore, body.ef-theme .tag{ transition:none; }
+}
+
+/* ============================================================
+   右侧边栏音乐播放器(完整版)
+   ============================================================ */
+.ef-player{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:120;width:250px;
+  background:rgba(13,13,13,.93);border:1px solid #35373c;border-right:none;
+  border-radius:10px 0 0 10px;backdrop-filter:blur(12px) saturate(140%);
+  box-shadow:-8px 0 24px rgba(0,0,0,.42);overflow:hidden;
+  font-family:"JetBrains Mono","Noto Sans Mono","Microsoft YaHei",monospace;
+  transition:transform .35s cubic-bezier(.4,0,.2,1)}
+.ef-player-head{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer;user-select:none}
+.ef-player-hd-title{color:#fffa00;font-size:11px;letter-spacing:.15em;font-weight:700}
+.ef-player-toggle{background:none;border:none;color:#888;cursor:pointer;padding:2px;
+  display:flex;align-items:center;transition:transform .3s,color .2s}
+.ef-player-toggle svg{width:18px;height:18px;fill:currentColor}
+.ef-player-toggle:hover{color:#fffa00}
+.ef-player.collapsed .ef-player-toggle svg{transform:rotate(-90deg)}
+.ef-player.collapsed .ef-player-body{display:none}
+.ef-player-body{padding:12px}
+.ef-player-info{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ef-player-cover{width:46px;height:46px;border-radius:6px;object-fit:cover;border:1px solid #35373c;flex:none}
+.ef-player-meta{min-width:0;flex:1}
+.ef-player-title{color:#f2f2f2;font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ef-player-artist{color:#888;font-size:10.5px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ef-player-prog{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.ef-player-time{color:#777;font-size:10px;font-family:monospace;min-width:30px;text-align:center}
+.ef-player-bar{flex:1;height:4px;background:rgba(255,255,255,.1);border-radius:2px;position:relative;cursor:pointer;overflow:hidden}
+.ef-player-bar i{position:absolute;top:0;left:0;height:100%;border-radius:2px}
+#efPBuf{background:rgba(255,255,255,.16);width:0}
+#efPFill{background:#fffa00;width:0;box-shadow:0 0 6px rgba(255,250,0,.4)}
+.ef-player-ctrl{display:flex;align-items:center;justify-content:space-between;gap:2px}
+.ef-pbtn{background:none;border:none;color:#bbb;cursor:pointer;padding:4px;
+  display:flex;align-items:center;justify-content:center;border-radius:4px;transition:color .2s,transform .15s}
+.ef-pbtn svg{width:18px;height:18px;fill:currentColor}
+.ef-pbtn:hover{color:#fffa00;transform:scale(1.1)}
+.ef-pplay{width:36px;height:36px;border-radius:50%;background:rgba(255,250,0,.12);border:1px solid rgba(255,250,0,.4)}
+.ef-pplay svg{width:20px;height:20px;fill:#fffa00}
+.ef-pplay:hover{background:rgba(255,250,0,.22)}
+.ef-ic-pause{display:none}
+.ef-player.playing .ef-ic-play{display:none}
+.ef-player.playing .ef-ic-pause{display:block}
+.ef-player.playing .ef-pplay{box-shadow:0 0 12px rgba(255,250,0,.3)}
+.ef-pvol{display:flex;align-items:center;gap:5px}
+.ef-vol-range{width:50px;height:3px;-webkit-appearance:none;appearance:none;background:rgba(255,255,255,.15);border-radius:2px;outline:none;cursor:pointer}
+.ef-vol-range::-webkit-slider-thumb{-webkit-appearance:none;width:10px;height:10px;border-radius:50%;background:#fffa00;cursor:pointer}
+.ef-vol-range::-moz-range-thumb{width:10px;height:10px;border-radius:50%;background:#fffa00;border:none}
+body.ef-theme[data-theme="light"] .ef-player{ background:rgba(255,255,255,.95); border-color:#ddd; box-shadow:-6px 0 18px rgba(0,0,0,.08); }
+body.ef-theme[data-theme="light"] .ef-player-head{ border-bottom-color:rgba(0,0,0,.08); }
+body.ef-theme[data-theme="light"] .ef-player-title{ color:#222; }
+body.ef-theme[data-theme="light"] .ef-player-artist,
+body.ef-theme[data-theme="light"] .ef-player-time{ color:#888; }
+body.ef-theme[data-theme="light"] .ef-player-bar{ background:rgba(0,0,0,.1); }
+body.ef-theme[data-theme="light"] .ef-pbtn{ color:#555; }
+
+/* ============================================================
+   手机端: 播放器/地名卡 3秒后收缩成图标吸附(点击展开)
+   ============================================================ */
+.ef-mini-ic{ display:none }
+@media (max-width:768px){
+  /* 播放器 mini: 缩成圆形音符图标 */
+  .ef-player.mini{ width:54px; height:54px; border-radius:50%; padding:0;
+    box-shadow:-4px 0 14px rgba(0,0,0,.4); }
+  .ef-player.mini .ef-player-head{ padding:0; height:54px; justify-content:center;
+    align-items:center; border-bottom:none; cursor:pointer }
+  .ef-player.mini .ef-player-hd-title,
+  .ef-player.mini .ef-player-toggle{ display:none }
+  .ef-player.mini .ef-mini-ic{ display:block; width:26px; height:26px; fill:#fffa00 }
+  .ef-player.mini .ef-player-body{ display:none }
+  /* 地名卡 mini: 缩成圆形定位图标 */
+  .ef-index.mini{ width:54px; height:54px; padding:0; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    border-left:1px solid rgba(255,250,0,.20); cursor:pointer }
+  .ef-index.mini > *{ display:none !important }
+  .ef-index.mini::before{ content:'◉'; color:#fffa00; font-size:24px; line-height:1; }
+}
