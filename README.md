@@ -51,17 +51,83 @@ git clone https://github.com/longking2012/Endfield-hexo-Theme.git themes/endfiel
 #    将 theme 字段修改为:  theme: endfield
 ```
 
-接着,清理并重新生成静态文件:
+接着，清理并重新生成静态文件：
 
 ```bash
 hexo clean && hexo generate
 ```
 
-启动本地预览,访问 `http://localhost:4000` 查看效果:
+启动本地预览，访问 `http://localhost:4000` 查看效果：
 
 ```bash
 hexo server
 ```
+
+## 部署
+
+主题下载完成后，你可以选择以下任意一种方式来展示你的博客。
+
+### 方式一：本地部署
+
+如果你只想在自己的电脑上预览或写作，本地部署最简单。它不需要任何服务器，所有内容都在本地运行。
+
+```bash
+# 1. 在站点根目录生成静态文件
+hexo clean && hexo generate
+
+# 2. 启动本地预览服务
+hexo server
+```
+
+执行后在浏览器打开 `http://localhost:4000` 即可看到博客。这种方式适合写作时的实时预览，但网页只在本地可见，关掉命令后就会失效。
+
+如果你想把网页生成到本地的一个文件夹里（比如交给自己的服务器托管），只需执行：
+
+```bash
+hexo clean && hexo generate
+```
+
+生成的所有静态网页都会保存在站点根目录的 `public` 文件夹里，你可以直接把这个文件夹部署到任何支持静态网站的服务器上。
+
+### 方式二：GitHub Pages 部署
+
+GitHub Pages 可以把你的博客免费托管到网络上，任何人都能通过链接访问。它的原理是：把生成的静态网页推送到 GitHub 的一个特殊分支，GitHub 会自动帮你发布。
+
+#### 第一步：创建仓库
+
+在 GitHub 上新建一个名为 `用户名.github.io` 的仓库（把“用户名”换成你的 GitHub 用户名），这个仓库就是你的博客地址。
+
+#### 第二步：安装部署插件
+
+在 Hexo 站点根目录安装部署工具：
+
+```bash
+npm install hexo-deployer-git --save
+```
+
+#### 第三步：配置部署信息
+
+打开站点根目录的 `_config.yml`，找到 `deploy` 部分，改成：
+
+```yaml
+deploy:
+  type: 'git'
+  repo: 'https://github.com/你的用户名/你的用户名.github.io.git'
+  branch: 'main'
+```
+
+#### 第四步：生成并发布
+
+执行下面两条命令，网页就会自动发布到 GitHub Pages：
+
+```bash
+hexo clean && hexo generate
+hexo deploy
+```
+
+发布成功后，稍等一两分钟，访问 `https://你的用户名.github.io` 就能看到你的博客了。
+
+> 提示：每次更新文章后，只需重新执行上面这两条命令，网页就会自动刷新。
 
 ## 配置
 
