@@ -24,15 +24,15 @@ dark_mode:
 # Footer
 footer:
   copyright: true
-  icp: 20269027
+  icp: ''
   gongan_id:
   gongan_num:
 
-# SEO meta 站点验证
+# SEO meta 站点验证 (可选, 留空则不输出)
 verification:
-  baidu: codeva-ZaH6K1E2F1
-  bing: 68492A6D7A8B6694C8C66200B91F05CB
-  google:
+  baidu: ''
+  bing: ''
+  google: ''
 
 # Accent color (overridden in endfield.css; keep for fallback)
 accent_color: '#fffa00'

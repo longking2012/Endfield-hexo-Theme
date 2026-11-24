@@ -2,5 +2,8 @@
   "name": "hexo-theme-endfield",
   "version": "0.1.0",
   "description": "Arknights: Endfield themed Hexo blog theme with contour terrain background",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "setup": "node scripts/setup.js"
+  }
 }
